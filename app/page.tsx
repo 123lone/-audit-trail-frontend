@@ -21,7 +21,8 @@ export default function Home() {
   const [history, setHistory] = useState<VersionEntry[]>([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/versions")
+    fetch("https://audit-trail-backend-zwg6.onrender.com/versions")
+
       .then(res => res.json())
       .then((data: VersionEntry[]) => setHistory(data));
   }, []);
