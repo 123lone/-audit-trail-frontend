@@ -20,20 +20,21 @@ export default function Home() {
   const [text, setText] = useState<string>("");
   const [history, setHistory] = useState<VersionEntry[]>([]);
 
+  // Load history from live backend
   useEffect(() => {
     fetch("https://audit-trail-backend-zwg6.onrender.com/versions")
-
       .then(res => res.json())
       .then((data: VersionEntry[]) => setHistory(data));
   }, []);
 
+  // Save new version to live backend
   async function saveText() {
     const previous =
       history.length && history[history.length - 1].newLengthText
         ? history[history.length - 1].newLengthText
         : "";
 
-    const res = await fetch("http://localhost:5000/save-version", {
+    const res = await fetch("https://audit-trail-backend-zwg6.onrender.com/save-version", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ previous, current: text }),
@@ -51,7 +52,7 @@ export default function Home() {
         📝 Audit Trail Generator
       </h1>
 
-      {/* Editor */}
+      {/* Text Editor */}
       <div className="max-w-3xl mx-auto mt-8 p-6 bg-white/5 backdrop-blur-xl shadow-xl rounded-xl border border-purple-400/20">
         <textarea
           value={text}
@@ -68,7 +69,7 @@ export default function Home() {
         </button>
       </div>
 
-      {/* History */}
+      {/* Version History */}
       <h2 className="text-3xl font-bold mt-10 mb-4 text-center">📂 Version History</h2>
 
       <div className="max-w-3xl mx-auto max-h-[60vh] overflow-y-auto space-y-4 scrollbar-thin scrollbar-thumb-purple-500/40 scrollbar-track-transparent">
